@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
-import { BookOpen, Shield, Target, MessageCircle } from "lucide-react";
+import { BookOpen, Shield, Target, MessageCircle, Send, History, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Progress } from "@/components/ui/progress";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -130,6 +133,190 @@ const Landing = () => {
               <p className="text-muted-foreground leading-relaxed">
                 Chat with our AI to understand your curriculum and get learning guidance.
               </p>
+            </Card>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* AI Chatbot Section */}
+      <section className="container mx-auto px-4 py-20 bg-white/50">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        >
+          <div className="text-center mb-12">
+            <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+              Meet Your AI Study Assistant
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Ask questions, refine your curriculum, and get on-demand guidance from our Ethical AI tutor.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-[300px_1fr_300px] gap-6 max-w-7xl mx-auto">
+            {/* Left Panel - Chat History */}
+            <Card className="p-6 bg-white hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-2 mb-4">
+                <History className="h-5 w-5 text-blue-600" />
+                <h3 className="font-display text-lg font-semibold">Chat History</h3>
+              </div>
+              <ScrollArea className="h-[400px]">
+                <div className="space-y-2">
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-left h-auto py-3"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-sm truncate">Cyber Security CIE Prep</div>
+                      <div className="text-xs text-muted-foreground">2 days ago</div>
+                    </div>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-left h-auto py-3"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-sm truncate">Quantum Physics Unit 3</div>
+                      <div className="text-xs text-muted-foreground">5 days ago</div>
+                    </div>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-left h-auto py-3"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-sm truncate">AI for MPLS & SR</div>
+                      <div className="text-xs text-muted-foreground">1 week ago</div>
+                    </div>
+                  </Button>
+                </div>
+              </ScrollArea>
+              <Button
+                variant="outline"
+                className="w-full mt-4"
+                onClick={() => navigate("/chat")}
+              >
+                View All History
+              </Button>
+            </Card>
+
+            {/* Center Panel - Main Chatbot */}
+            <Card className="p-6 bg-white hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div className="flex items-center gap-2 mb-4 pb-4 border-b">
+                <MessageCircle className="h-5 w-5 text-blue-600" />
+                <h3 className="font-display text-lg font-semibold">AI Assistant</h3>
+              </div>
+
+              <ScrollArea className="flex-1 mb-4 h-[300px]">
+                <div className="space-y-4 p-2">
+                  {/* Sample conversation */}
+                  <div className="flex justify-start">
+                    <div className="bg-muted p-3 rounded-lg max-w-[80%]">
+                      <p className="text-sm">
+                        Hi! I'm your ethical AI learning assistant. Ask me questions about your studies, and I'll help guide your learning journey.
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end">
+                    <div className="bg-blue-600 text-white p-3 rounded-lg max-w-[80%]">
+                      <p className="text-sm">
+                        Can you help me understand quantum entanglement?
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <div className="bg-muted p-3 rounded-lg max-w-[80%]">
+                      <p className="text-sm">
+                        Quantum entanglement is a fascinating phenomenon! Let me break it down...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </ScrollArea>
+
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Ask anything about your studies..."
+                  disabled
+                  className="bg-muted/50"
+                />
+                <Button className="bg-blue-600 hover:bg-blue-700">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <Button
+                className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => {
+                  if (!isAuthenticated) {
+                    navigate("/auth");
+                  } else {
+                    navigate("/chat");
+                  }
+                }}
+              >
+                {isAuthenticated ? "Open Full Chat" : "Sign In to Chat"}
+              </Button>
+            </Card>
+
+            {/* Right Panel - Progress Dashboard */}
+            <Card className="p-6 bg-white hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-2 mb-4">
+                <TrendingUp className="h-5 w-5 text-blue-600" />
+                <h3 className="font-display text-lg font-semibold">Your Progress</h3>
+              </div>
+              
+              <div className="space-y-6">
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Overall Progress</span>
+                    <span className="text-sm text-muted-foreground">45%</span>
+                  </div>
+                  <Progress value={45} className="h-2" />
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm">Cyber Security</span>
+                      <span className="text-xs text-muted-foreground">60%</span>
+                    </div>
+                    <Progress value={60} className="h-1.5" />
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm">Quantum Physics</span>
+                      <span className="text-xs text-muted-foreground">30%</span>
+                    </div>
+                    <Progress value={30} className="h-1.5" />
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium">Study Streak</span>
+                    <span className="text-2xl font-bold text-blue-600">5</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">days in a row</p>
+                </div>
+
+                <div className="pt-4 border-t">
+                  <p className="text-xs text-muted-foreground mb-1">Last Active Topic</p>
+                  <p className="text-sm font-medium">Unit 3 – Lasers & Optical Fibers</p>
+                </div>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => navigate("/generator")}
+                >
+                  View Full Report
+                </Button>
+              </div>
             </Card>
           </div>
         </motion.div>
